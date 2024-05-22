@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suricata IDS Alerts</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function fetchAlerts() {
+                $.getJSON('/alerts', function(data) {
+                    let html = '';
+                    data.forEach(function(alert) {
+                        html += `<div class="${alert.severity_class} p-4 rounded">
+                                    <p><strong>Source IP:</strong> ${alert.timestamp}</p>
+                                    <p><strong>Source IP:</strong> ${alert.src_ip}</p>
+                                    <p><strong>Destination IP:</strong> ${alert.dest_ip}</p>
+                                    <p><strong>Signature:</strong> ${alert.signature}</p>
+                                    <p><strong>Category:</strong> ${alert.category}</p>
+                                    <p><strong>Severity:</strong> ${alert.severity}</p>
+                                </div>`;
+                    });
+                    $('.alerts-container').html(html);
+                });
+            }
+            fetchAlerts();
+            setInterval(fetchAlerts, 5000);  // Refresh every 5 seconds
+        });
+    </script>
+</head>
+<body class=" bg-gray-100 p-8">
+    <h1 class="text-2xl font-bold mb-4">Suricata IDS Alerts</h1>
+    <div class="grid gap-4 alerts-container">
+        <!-- Alerts will be loaded here -->
+    </div>
+</body>
+</html>
